@@ -18,6 +18,14 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y lsof psmisc && \
 
 COPY setup /tmp/setup
 
+RUN mkdir -p /root/.ssh && \
+    chmod 700 /root/.ssh
+
+COPY authorized_keys /root/.ssh/authorized_keys
+
+RUN chmod 600 /root/.ssh/authorized_keys && \
+    chown root:root /root/.ssh/authorized_keys
+
 # Run set-up script
 RUN chmod +x /tmp/setup/*.sh && \
     DEBIAN_FRONTEND=noninteractive /tmp/setup/setup.sh
